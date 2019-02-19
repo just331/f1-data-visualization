@@ -1,7 +1,10 @@
 package model
 
-// ConstructorStanding contains the standings for a constructor in a particular race
-type ConstructorStanding struct {
+import "github.com/go-bongo/bongo"
+
+// ConstructorStandings contains the standings for a constructor in a particular race
+type ConstructorStandings struct {
+	bongo.DocumentBase    `bson:",inline"`
 	ConstructorStandingID int    `json:"constructorstandingid"`
 	RaceID                int    `json:"raceid"`
 	ConstructorID         int    `json:"constructorid"`

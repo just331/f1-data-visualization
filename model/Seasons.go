@@ -1,7 +1,10 @@
 package model
 
-// Season contains a list of every season and corresponding Wikipedia link
-type Season struct {
-	Year int    `json:"year"`
-	URL  string `json:"url"`
+import "github.com/go-bongo/bongo"
+
+// Seasons contains a list of every season and corresponding Wikipedia link
+type Seasons struct {
+	bongo.DocumentBase `bson:",inline"`
+	Year               int    `json:"year"`
+	URL                string `json:"url"`
 }
