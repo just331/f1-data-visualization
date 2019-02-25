@@ -23,12 +23,11 @@ var (
 func init() {
 	connection, connErr = bongo.Connect(config)
 	if connErr != nil {
-		initDb()
 		panic(connErr)
 	}
 }
 
-func initDb() {
+func InitDb() {
 	var files []string
 	root := "dataset"
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
@@ -49,7 +48,7 @@ func initDb() {
 }
 
 func importCSVtoMongoDb(file string) error {
-	reg := regexp.MustCompile("\\/.*")
+	reg := regexp.MustCompile(`[\\/].*`)
 	match := reg.FindStringSubmatch(file)
 	fileName := match[0]
 	fileName = fileName[1 : len(fileName)-4]

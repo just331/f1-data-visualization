@@ -7,11 +7,13 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/joshuaj1397/f1-data-visualization/api"
+	"github.com/joshuaj1397/f1-data-visualization/model"
 )
 
 var port = "3005"
 
 func main() {
+	model.InitDb()
 	router := mux.NewRouter()
 	router.HandleFunc("/Races/{year}/{circuitid}", api.GetRace).Methods("GET")
 	router.HandleFunc("/LapTimes/{raceid}/{driverid}", api.GetRaceLapTimes).Methods("GET")
