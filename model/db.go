@@ -61,14 +61,14 @@ func importCSVtoMongoDb(file string) error {
 
 func GetRace(year, circuitid int64) (Races, error) {
 	race := &Races{}
-	err := connection.Collection("Races").FindOne(bson.M{"year": year, "circuitid": circuitid}, race)
+	err := connection.Collection("Races").FindOne(bson.M{"year": year, "circuitId": circuitid}, race)
 	return *race, err
 }
 
 func GetLaptTimes(raceid, driverid int64) []LapTimes {
 	laptime := &LapTimes{}
 	laptimes := []LapTimes{}
-	results := connection.Collection("LapTimes").Find(bson.M{"raceid": raceid, "driverid": driverid})
+	results := connection.Collection("LapTimes").Find(bson.M{"raceId": raceid, "driverId": driverid})
 	for results.Next(laptime) {
 		laptimes = append(laptimes, *laptime)
 	}
@@ -77,18 +77,18 @@ func GetLaptTimes(raceid, driverid int64) []LapTimes {
 
 func GetDriver(driverid int64) (Drivers, error) {
 	driver := &Drivers{}
-	err := connection.Collection("Drivers").FindOne(bson.M{"driverid": driverid}, driver)
+	err := connection.Collection("Drivers").FindOne(bson.M{"driverId": driverid}, driver)
 	return *driver, err
 }
 
 func GetConstructor(constructorid int64) (Constructors, error) {
 	constructor := &Constructors{}
-	err := connection.Collection("Constructors").FindOne(bson.M{"constructorid": constructorid}, constructor)
+	err := connection.Collection("Constructors").FindOne(bson.M{"constructorId": constructorid}, constructor)
 	return *constructor, err
 }
 
 func GetResults(raceid, driverid int64) (Results, error) {
 	results := &Results{}
-	err := connection.Collection("Results").FindOne(bson.M{"raceid": raceid, "driverid": driverid}, results)
+	err := connection.Collection("Results").FindOne(bson.M{"raceId": raceid, "driverId": driverid}, results)
 	return *results, err
 }

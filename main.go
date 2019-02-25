@@ -1,12 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"github.com/joshuaj1397/f1-data-visualization/api"
 )
+
+var port = "3005"
 
 func main() {
 	router := mux.NewRouter()
@@ -16,5 +19,7 @@ func main() {
 	router.HandleFunc("/Constructors/{constructorid}", api.GetConstructor).Methods("GET")
 	router.HandleFunc("/Results/{raceid}/{driverid}", api.GetResults).Methods("GET")
 
-	log.Fatal(http.ListenAndServe(":3005", router))
+	fmt.Println("Now listening on port " + port)
+	log.Fatal(http.ListenAndServe(":"+port, router))
+
 }
