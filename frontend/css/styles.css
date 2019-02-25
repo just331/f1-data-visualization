@@ -1,12 +1,16 @@
 #title {
-font-family: "Courier New", Courier, monospace;
-font-size: 40px;
-letter-spacing: 2px;
-word-spacing: 2px;
-color: #FFFFFF;
-font-weight: normal;
-text-decoration: none;
-font-style: normal;
-font-variant: normal;
-text-transform: none;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 40px;
+  letter-spacing: 2px;
+  word-spacing: 2px;
+  color: #FFFFFF;
+  font-weight: normal;
+  text-decoration: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+}
+
+body {
+  background: #383838;
 }
