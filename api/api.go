@@ -5,12 +5,14 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"fmt"
 
 	"github.com/gorilla/mux"
 	"github.com/joshuaj1397/f1-data-visualization/model"
 )
 
 func GetRace(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("GetRace called")
 	params := mux.Vars(r)
 	year, err := strconv.ParseInt(params["year"], 10, 32)
 	circuitid, err := strconv.ParseInt(params["circuitid"], 10, 32)
