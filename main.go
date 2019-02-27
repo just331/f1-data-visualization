@@ -11,7 +11,7 @@ import (
 )
 
 var port = "3005"
-var recreateDb = true
+var recreateDb = false
 
 func main() {
 	if recreateDb {
