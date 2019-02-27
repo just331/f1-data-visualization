@@ -5,18 +5,26 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"fmt"
 
 	"github.com/gorilla/mux"
 	"github.com/joshuaj1397/f1-data-visualization/model"
 )
 
+func GetCircuit(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	circuitId, err := strconv.ParseInt(params["circuitId"], 10, 32)
+	circuit, err := model.GetCircuit(int(circuitId))
+	if err != nil {
+		log.Fatal(err)
+	}
+	json.NewEncoder(w).Encode(circuit)
+}
+
 func GetRace(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("GetRace called")
 	params := mux.Vars(r)
 	year, err := strconv.ParseInt(params["year"], 10, 32)
-	circuitid, err := strconv.ParseInt(params["circuitid"], 10, 32)
-	race, err := model.GetRace(year, circuitid)
+	circuitId, err := strconv.ParseInt(params["circuitId"], 10, 32)
+	race, err := model.GetRace(int(year), int(circuitId))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -25,9 +33,9 @@ func GetRace(w http.ResponseWriter, r *http.Request) {
 
 func GetRaceLapTimes(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	raceid, err := strconv.ParseInt(params["raceid"], 10, 32)
-	driverid, err := strconv.ParseInt(params["driverid"], 10, 32)
-	laptimes := model.GetLaptTimes(raceid, driverid)
+	raceId, err := strconv.ParseInt(params["raceId"], 10, 32)
+	driverId, err := strconv.ParseInt(params["driverId"], 10, 32)
+	laptimes := model.GetLapTimes(int(raceId), int(driverId))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,8 +44,8 @@ func GetRaceLapTimes(w http.ResponseWriter, r *http.Request) {
 
 func GetDriver(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	driverid, err := strconv.ParseInt(params["year"], 10, 32)
-	driver, err := model.GetDriver(driverid)
+	driverId, err := strconv.ParseInt(params["year"], 10, 32)
+	driver, err := model.GetDriver(int(driverId))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -46,8 +54,8 @@ func GetDriver(w http.ResponseWriter, r *http.Request) {
 
 func GetConstructor(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	constructorid, err := strconv.ParseInt(params["constructorid"], 10, 32)
-	constructor, err := model.GetConstructor(constructorid)
+	constructorId, err := strconv.ParseInt(params["constructorId"], 10, 32)
+	constructor, err := model.GetConstructor(int(constructorId))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -56,9 +64,9 @@ func GetConstructor(w http.ResponseWriter, r *http.Request) {
 
 func GetResults(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	raceid, err := strconv.ParseInt(params["raceid"], 10, 32)
-	driverid, err := strconv.ParseInt(params["driverid"], 10, 32)
-	results, err := model.GetResults(raceid, driverid)
+	raceId, err := strconv.ParseInt(params["raceId"], 10, 32)
+	driverId, err := strconv.ParseInt(params["driverId"], 10, 32)
+	results, err := model.GetResults(int(raceId), int(driverId))
 	if err != nil {
 		log.Fatal(err)
 	}

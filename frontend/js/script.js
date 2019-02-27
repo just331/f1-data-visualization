@@ -1,33 +1,40 @@
 const proxy = "http://localhost:3005"
 
-document.addEventListener("keydown", function(e) {
+document.addEventListener("keydown", async (e) => {
   if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-    var ele = document.getElementById('year');
+    let ele = document.getElementById('year');
     e.key === "ArrowUp" ? ele.innerHTML++ : ele.innerHTML--;
   } else if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
-    var ele = document.getElementById('circuit');
+    let ele = document.getElementById('circuit');
     if (e.key === "ArrowLeft") {
       ele.innerHTML = "prev"; // Remove this after adding db logic
-      var arg = ele.dataset.circuitid++;
-      var url = proxy + "/GetRace" + arg.toString();
+      let arg = ele.dataset.circuitid--;
+      let url = proxy + "/Circuit/" + arg.toString();
       ajaxRequest("GET", url)
     } else {
       ele.innerHTML = "next"; // Remove this after adding db logic
-      var arg = ele.dataset.circuitid--;
-      var url = proxy + "/GetRace" + arg.toString();
-      console.log(ajaxRequest("GET", url))
+      let arg = ele.dataset.circuitid++;
+      let url = proxy + "/Circuit/" + arg.toString();
+      let result = await ajaxRequest("GET", url);
+      console.log(result);
     }
   }
 });
 
-var ajaxRequest = function (protocol, url) {
-  console.log(protocol, url)
-  var httpRequest = new XMLHttpRequest();
+const ajaxRequest = async (protocol, url) => {
+  console.log(protocol, url);
+  let httpRequest = new XMLHttpRequest();
   if (!httpRequest) {
     alert('Can not create XMLHTTP instance');
     return false;
   }
-  httpRequest.open(protocol, url);
+  httpRequest.onreadystatechange = () => {
+
+     if (httpRequest.readyState === 4) {
+        // Javascript function JSON.parse to parse JSON data
+        return JSON.parse(httpRequest.responseText);
+     }
+  }
+  httpRequest.open(protocol, url, true);
   httpRequest.send();
-  return httpRequest.responseXML;
 }

@@ -1,13 +1,10 @@
 package model
 
-import "github.com/go-bongo/bongo"
-
-// ConstructorResults contains details of the results for every race, including race, constructor, and awarded points
+// ConstructorResults contains details of the results for every race, including race, constructor, and awarded Points
 type ConstructorResults struct {
-	bongo.DocumentBase  `bson:",inline"`
-	ConstructorResultID int    `json:"constructorresultid"`
-	RaceID              int    `json:"raceid"`
-	ConstructorID       int    `json:"constructorid"`
-	Points              int    `json:"points"`
-	Status              string `json:"status"`
+	ConstructorResultId int    `json:"constructorResultsId" bson:"constructorResultsId"`
+	RaceId              int    `json:"raceId" bson:"raceId"`
+	ConstructorId       int    `json:"constructorId" bson:"constructorId"`
+	Points              int    `json:"points" bson:"points"`
+	Status              string `json:"status" bson:"status"`
 }

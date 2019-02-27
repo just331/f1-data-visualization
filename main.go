@@ -11,15 +11,25 @@ import (
 )
 
 var port = "3005"
+var recreateDb = false
 
 func main() {
-	model.InitDb()
+	if recreateDb {
+		model.InitDb()
+	}
 	router := mux.NewRouter()
-	router.HandleFunc("/Races/{year}/{circuitid}", api.GetRace).Methods("GET")
-	router.HandleFunc("/LapTimes/{raceid}/{driverid}", api.GetRaceLapTimes).Methods("GET")
-	router.HandleFunc("/Drivers/{driverid}", api.GetDriver).Methods("GET")
-	router.HandleFunc("/Constructors/{constructorid}", api.GetConstructor).Methods("GET")
-	router.HandleFunc("/Results/{raceid}/{driverid}", api.GetResults).Methods("GET")
+	fs := http.FileServer(http.Dir("./frontend/"))
+
+	// API
+	router.HandleFunc("/Circuit/{circuitId}", api.GetCircuit).Methods("GET")
+	router.HandleFunc("/Races/{year}/{circuitId}", api.GetRace).Methods("GET")
+	router.HandleFunc("/LapTimes/{raceId}/{driverId}", api.GetRaceLapTimes).Methods("GET")
+	router.HandleFunc("/Drivers/{driverId}", api.GetDriver).Methods("GET")
+	router.HandleFunc("/Constructors/{constructorId}", api.GetConstructor).Methods("GET")
+	router.HandleFunc("/Results/{raceId}/{driverId}", api.GetResults).Methods("GET")
+
+	// Webpages
+	router.PathPrefix("/").Handler(fs)
 
 	fmt.Println("Now listening on port " + port)
 	log.Fatal(http.ListenAndServe(":"+port, router))

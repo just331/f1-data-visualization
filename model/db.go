@@ -1,29 +1,40 @@
 package model
 
 import (
+	"context"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/globalsign/mgo/bson"
-	"github.com/go-bongo/bongo"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var (
-	config = &bongo.Config{
-		ConnectionString: os.Getenv("connectionStr"),
-		Database:         "f1",
-	}
-	connection *bongo.Connection
-	connErr    error
+	connectionStr = os.Getenv("connectionStr")
+	dbName        = "f1"
+	ctx, _        = context.WithTimeout(context.Background(), 10*time.Second)
+	client        *mongo.Client
+	db            *mongo.Database
 )
 
 func init() {
-	connection, connErr = bongo.Connect(config)
+	client, _ = mongo.NewClient(options.Client().ApplyURI(connectionStr))
+	connErr := client.Connect(ctx)
+	db = client.Database(dbName)
+
 	if connErr != nil {
 		panic(connErr)
+	}
+
+	err := client.Ping(ctx, nil)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
 
@@ -58,36 +69,56 @@ func importCSVtoMongoDb(file string) error {
 	return err
 }
 
-func GetRace(year, circuitid int64) (Races, error) {
+func GetCircuit(circuitId int) (Circuits, error) {
+	circuit := &Circuits{}
+	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
+	err := db.Collection("Circuits").FindOne(ctx, bson.M{"circuitId": circuitId}).Decode(circuit)
+	return *circuit, err
+}
+
+func GetRace(year, circuitId int) (Races, error) {
 	race := &Races{}
-	err := connection.Collection("Races").FindOne(bson.M{"year": year, "circuitId": circuitid}, race)
+	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
+	err := db.Collection("Races").FindOne(ctx, bson.M{"year": year, "circuitId": circuitId}).Decode(race)
 	return *race, err
 }
 
-func GetLaptTimes(raceid, driverid int64) []LapTimes {
+func GetLapTimes(raceId, driverId int) []LapTimes {
 	laptime := &LapTimes{}
 	laptimes := []LapTimes{}
-	results := connection.Collection("LapTimes").Find(bson.M{"raceId": raceid, "driverId": driverid})
-	for results.Next(laptime) {
+	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
+	cur, err := db.Collection("LapTimes").Find(ctx, bson.M{"raceId": raceId, "driverId": driverId})
+	if err != nil {
+		log.Fatal(err)
+	}
+	for cur.Next(ctx) {
+		var elem LapTimes
+		err := cur.Decode(&elem)
+		if err != nil {
+			log.Fatal(err)
+		}
 		laptimes = append(laptimes, *laptime)
 	}
 	return laptimes
 }
 
-func GetDriver(driverid int64) (Drivers, error) {
+func GetDriver(driverId int) (Drivers, error) {
 	driver := &Drivers{}
-	err := connection.Collection("Drivers").FindOne(bson.M{"driverId": driverid}, driver)
+	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
+	err := db.Collection("Drivers").FindOne(ctx, bson.M{"driverId": driverId}).Decode(driver)
 	return *driver, err
 }
 
-func GetConstructor(constructorid int64) (Constructors, error) {
+func GetConstructor(constructorId int) (Constructors, error) {
 	constructor := &Constructors{}
-	err := connection.Collection("Constructors").FindOne(bson.M{"constructorId": constructorid}, constructor)
+	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
+	err := db.Collection("Constructors").FindOne(ctx, bson.M{"constructorId": constructorId}).Decode(constructor)
 	return *constructor, err
 }
 
-func GetResults(raceid, driverid int64) (Results, error) {
+func GetResults(raceId, driverId int) (Results, error) {
 	results := &Results{}
-	err := connection.Collection("Results").FindOne(bson.M{"raceId": raceid, "driverId": driverid}, results)
+	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
+	err := db.Collection("Results").FindOne(ctx, bson.M{"raceId": raceId, "driverId": driverId}).Decode(results)
 	return *results, err
 }

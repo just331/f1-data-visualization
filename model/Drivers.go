@@ -1,17 +1,14 @@
 package model
 
-import "github.com/go-bongo/bongo"
-
 // Drivers contains a list of every Formula 1 driver, including full name, dob, and nationality.
 type Drivers struct {
-	bongo.DocumentBase `bson:",inline"`
-	DriverID           int    `json:"driverid"`
-	DriverRef          string `json:"driverref"`
-	Number             int    `json:"number"`
-	Code               string `json:"code"`
-	Forename           string `json:"forename"`
-	Surname            string `json:"surname"`
-	DOB                string `json:"dob"`
-	Nationality        string `json:"nationality"`
-	URL                string `json:"url"`
+	DriverId    int    `json:"driverId" bson:"driverId"`
+	DriverRef   string `json:"driverRef" bson:"driverRef"`
+	Number      int    `json:"number" bson:"number"`
+	Code        string `json:"code" bson:"code"`
+	Forename    string `json:"forename" bson:"forename"`
+	Surname     string `json:"surname" bson:"surname"`
+	DOB         string `json:"dob" bson:"dob"`
+	Nationality string `json:"nationality" bson:"nationality"`
+	URL         string `json:"url" bson:"url"`
 }

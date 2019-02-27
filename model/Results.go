@@ -1,25 +1,23 @@
 package model
 
-import "github.com/go-bongo/bongo"
-
 // Results contains details for the final results of a driver in a particular race
 type Results struct {
-	bongo.DocumentBase `bson:",inline"`
-	ResultID           int    `json:"resultid"`
-	RaceID             int    `json:"raceid"`
-	DriverID           int    `json:"driverid"`
-	ConstructorID      int    `json:"constructorid"`
-	Number             int    `json:"number"`
-	Grid               int    `json:"grid"`
-	Position           int    `json:"position"`
-	PositionText       string `json:"positiontext"`
-	PositionOrder      int    `json:"positionorder"`
-	Points             int    `json:"points"`
-	Laps               int    `json:"laps"`
-	Time               string `json:"time"`
-	Milliseconds       int    `json:"milliseconds"`
-	FastestLap         int    `json:"fastestlap"`
-	Rank               int    `json:"rank"`
-	FastestLapTime     string `json:"fastestlaptime"`
-	StatusID           int    `json:"statusid"`
+	ResultId        int     `json:"resultId" bson:"resultId"`
+	RaceId          int     `json:"raceId" bson:"raceId"`
+	DriverId        int     `json:"driverId" bson:"driverId"`
+	ConstructorId   int     `json:"constructorId" bson:"constructorId"`
+	Number          int     `json:"number" bson:"number"`
+	GrId            int     `json:"grId" bson:"grId"`
+	Position        int     `json:"position" bson:"position"`
+	PositionText    string  `json:"positionText" bson:"positionText"`
+	PositionOrder   int     `json:"positionOrder" bson:"positionOrder"`
+	Points          int     `json:"points" bson:"points"`
+	Laps            int     `json:"laps" bson:"laps"`
+	Time            string  `json:"time" bson:"time"`
+	Milliseconds    int     `json:"milliseconds" bson:"milliseconds"`
+	FastestLap      int     `json:"fastestLap" bson:"fastestLap"`
+	Rank            int     `json:"rank" bson:"rank"`
+	FastestLapTime  string  `json:"fastestlaptime" bson:"fastestlaptime"`
+	FastestLapSpeed float64 `json:"fastestLapSpeed" bson:"fastestLapSpeed"`
+	StatusId        int     `json:"statusId" bson:"statusId"`
 }
