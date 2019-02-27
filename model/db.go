@@ -92,8 +92,7 @@ func GetLapTimes(raceId, driverId int) []LapTimes {
 		log.Fatal(err)
 	}
 	for cur.Next(ctx) {
-		var elem LapTimes
-		err := cur.Decode(&elem)
+		err := cur.Decode(&laptime)
 		if err != nil {
 			log.Fatal(err)
 		}

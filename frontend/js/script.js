@@ -3,8 +3,8 @@ const proxy = "http://localhost:3005"
 document.addEventListener("keydown", async (e) => {
   if (e.key === "ArrowUp" || e.key === "ArrowDown") {
     let ele = document.getElementById('year');
-    e.key === "ArrowUp" ? ele.innerHTML++ : ele.innerHTML--;
-  } else if (e.key === "ArrowLeft" || e.key === "ArrowRight"){
+    e.key === "ArrowUp" ? ++ele.innerHTML : --ele.innerHTML;
+  } else if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
       await changeCircuit(e);
   }
 });

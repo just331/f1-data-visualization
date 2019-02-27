@@ -12,8 +12,8 @@ import (
 
 func GetCircuit(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	circuitId, _ := strconv.Atoi(params["circuitId"])
-	circuit, err := model.GetCircuit(int(circuitId))
+	circuitId, err := strconv.Atoi(params["circuitId"])
+	circuit, err := model.GetCircuit(circuitId)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -22,9 +22,9 @@ func GetCircuit(w http.ResponseWriter, r *http.Request) {
 
 func GetRace(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	year, err := strconv.ParseInt(params["year"], 10, 32)
-	circuitId, err := strconv.ParseInt(params["circuitId"], 10, 32)
-	race, err := model.GetRace(int(year), int(circuitId))
+	year, err := strconv.Atoi(params["year"])
+	circuitId, err := strconv.Atoi(params["circuitId"])
+	race, err := model.GetRace(year, circuitId)
 	if err != nil {
 		log.Fatal(err)
 	}
