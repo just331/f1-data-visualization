@@ -9,12 +9,12 @@ document.addEventListener("keydown", async (e) => {
     if (e.key === "ArrowLeft") {
       ele.innerHTML = "prev"; // Remove this after adding db logic
       let arg = ele.dataset.circuitid--;
-      let url = proxy + "/Circuit/" + arg.toString();
+      let url = proxy + "/Circuit/" + arg;
       ajaxRequest("GET", url)
     } else {
       ele.innerHTML = "next"; // Remove this after adding db logic
       let arg = ele.dataset.circuitid++;
-      let url = proxy + "/Circuit/" + arg.toString();
+      let url = proxy + "/Circuit/" + arg;
       let result = await ajaxRequest("GET", url);
       console.log(result);
     }
@@ -30,7 +30,7 @@ const ajaxRequest = async (protocol, url) => {
   }
   httpRequest.onreadystatechange = () => {
 
-     if (httpRequest.readyState === 4) {
+     if (httpRequest.readyState === 4 && httpRequest.status === 200) {
         // Javascript function JSON.parse to parse JSON data
         return JSON.parse(httpRequest.responseText);
      }

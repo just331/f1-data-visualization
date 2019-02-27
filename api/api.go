@@ -12,7 +12,7 @@ import (
 
 func GetCircuit(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	circuitId, err := strconv.ParseInt(params["circuitId"], 10, 32)
+	circuitId, _ := strconv.Atoi(params["circuitId"])
 	circuit, err := model.GetCircuit(int(circuitId))
 	if err != nil {
 		log.Fatal(err)
