@@ -115,9 +115,20 @@ func GetConstructor(constructorId int) (Constructors, error) {
 	return *constructor, err
 }
 
-func GetResults(raceId, driverId int) (Results, error) {
-	results := &Results{}
+func GetResults(raceId, driverId int) []Results {
+	result := &Results{}
+	results := []Results{}
 	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
-	err := db.Collection("Results").FindOne(ctx, bson.M{"raceId": raceId, "driverId": driverId}).Decode(results)
-	return *results, err
+	cur, err := db.Collection("Results").Find(ctx, bson.M{"raceId": raceId, "driverId": driverId})
+	if err != nil {
+		log.Fatal(err)
+	}
+	for cur.Next(ctx) {
+		err := cur.Decode(&result)
+		if err != nil {
+			log.Fatal(err)
+		}
+		results = append(results, *result)
+	}
+	return results
 }

@@ -12,7 +12,6 @@ document.addEventListener("keydown", async (e) => {
 const changeCircuit = async (e) => {
   let ele = document.getElementById('circuit');
   if (e.key === "ArrowLeft" && ele.dataset.circuitid != 1) {
-    ele.innerHTML = "prev"; // Remove this after adding db logic
     let arg = --ele.dataset.circuitid;
     let url = proxy + "/Circuit/" + arg;
     let result = await ajaxRequest("GET", url);
@@ -23,6 +22,21 @@ const changeCircuit = async (e) => {
     let result = await ajaxRequest("GET", url);
     ele.innerHTML = result.name;
   }
+}
+
+const getRace = async () => {
+  let circuitid = document.getElementById('circuit').dataset.circuitid;
+  let year = document.getElementById('year').dataset.year;
+  let url = proxy + "/Races/" + year + "/" + circuitid;
+  let result = await ajaxRequest("GET", url);
+  console.log(result);
+  getResults(result);
+}
+
+const getResults = async (race) => {
+  let url = proxy + "/Results/" + race.raceId;
+  let result = await ajaxRequest("GET", url);
+  console.log(result);
 }
 
 const ajaxRequest = async (protocol, url) => {
