@@ -115,11 +115,11 @@ func GetConstructor(constructorId int) (Constructors, error) {
 	return *constructor, err
 }
 
-func GetResults(raceId, driverId int) []Results {
+func GetResults(raceId int) []Results {
 	result := &Results{}
 	results := []Results{}
 	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
-	cur, err := db.Collection("Results").Find(ctx, bson.M{"raceId": raceId, "driverId": driverId})
+	cur, err := db.Collection("Results").Find(ctx, bson.M{"raceId": raceId})
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -65,8 +65,7 @@ func GetConstructor(w http.ResponseWriter, r *http.Request) {
 func GetResults(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	raceId, err := strconv.ParseInt(params["raceId"], 10, 32)
-	driverId, err := strconv.ParseInt(params["driverId"], 10, 32)
-	results := model.GetResults(int(raceId), int(driverId))
+	results := model.GetResults(int(raceId))
 	if err != nil {
 		log.Fatal(err)
 	}

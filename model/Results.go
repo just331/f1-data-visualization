@@ -7,7 +7,7 @@ type Results struct {
 	DriverId        int     `json:"driverId" bson:"driverId"`
 	ConstructorId   int     `json:"constructorId" bson:"constructorId"`
 	Number          int     `json:"number" bson:"number"`
-	GrId            int     `json:"grId" bson:"grId"`
+	Grid            int     `json:"grid" bson:"grid"`
 	Position        int     `json:"position" bson:"position"`
 	PositionText    string  `json:"positionText" bson:"positionText"`
 	PositionOrder   int     `json:"positionOrder" bson:"positionOrder"`
