@@ -64,7 +64,7 @@ func importCSVtoMongoDb(file string) error {
 	fileName := match[0]
 	fileName = fileName[1 : len(fileName)-4]
 	collection := strings.Title(fileName)
-	cmd := exec.Command("mongoimport", "--db", "f1", "--collection", collection, "--type", "csv", "--headerline", "--file", file)
+	cmd := exec.Command("mongoimport", "--db", "f1", "--collection", collection, "--type", "csv", "--headerline", "--file", file, "--columnsHaveTypes", "--drop", "--ignoreBlanks")
 	err := cmd.Run()
 	return err
 }

@@ -1,4 +1,4 @@
-statusId,status
+statusId.int32(),status.string()
 1,Finished
 2,Disqualified
 3,Accident
