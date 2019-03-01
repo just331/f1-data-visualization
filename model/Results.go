@@ -17,7 +17,7 @@ type Results struct {
 	Milliseconds    int     `json:"milliseconds" bson:"milliseconds"`
 	FastestLap      int     `json:"fastestLap" bson:"fastestLap"`
 	Rank            int     `json:"rank" bson:"rank"`
-	FastestLapTime  string  `json:"fastestlLapTime" bson:"fastestLapTime"`
+	FastestLapTime  string  `json:"fastestLapTime" bson:"fastestLapTime"`
 	FastestLapSpeed float64 `json:"fastestLapSpeed" bson:"fastestLapSpeed"`
 	StatusId        int     `json:"statusId" bson:"statusId"`
 }
