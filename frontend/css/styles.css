@@ -36,6 +36,10 @@
   text-transform: none;
 }
 
+.line-chart {
+  border: 1px solid white;
+}
+
 body {
   background: #383838;
 }

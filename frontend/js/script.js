@@ -18,6 +18,70 @@ document.addEventListener("keydown", async (e) => {
   }
 });
 
+const drawChart = (data) => {
+  data.sort((a, b) => (a.lap > b.lap ? 1 : -1));
+  let svgWidth = 1200;
+  let svgHeight = 800;
+  let margin = { top: 20, right: 20, bottom: 30, left: 50 };
+  let width = svgWidth - margin.left - margin.right;
+  let height = svgHeight - margin.top - margin.bottom;
+
+  let svg = d3.select('svg')
+    .attr("width", svgWidth)
+    .attr("height", svgHeight);
+
+  let g = svg.append("g")
+    .attr("transform",
+      "translate(" + margin.left + "," + margin.top + ")"
+    );
+
+  let x = d3.scaleLinear().rangeRound([0, width]);
+  let y = d3.scaleLinear().rangeRound([height, 0]);
+
+  let line = d3.line()
+   .x(function(d) { return x(d.lap)})
+   .y(function(d) { return y(d.milliseconds)})
+   x.domain(d3.extent(data, function(d) { return d.lap }));
+   y.domain(d3.extent(data, function(d) { return d.milliseconds }));
+
+   g.append("g")
+     .attr("transform", "translate(0," + height + ")")
+     .call(d3.axisBottom(x))
+     .select(".domain")
+     .remove();
+
+   g.append("g")
+     .call(d3.axisLeft(y))
+     .append("text")
+     .attr("fill", "white")
+     .attr("transform", "rotate(-90)")
+     .attr("y", 6)
+     .attr("dy", "-6em")
+     .attr("text-anchor", "end")
+   .text("Time (ms)");
+
+   // Only plot the top three drivers by default
+   for (let laptimes of data) {
+     laptimes.sort((a, b) => (a.lap > b.lap ? 1 : -1));
+
+   }
+
+   g.append("path")
+    .datum(data)
+    .attr("fill", "none")
+    .attr("stroke", "steelblue")
+    .attr("stroke-linejoin", "round")
+    .attr("stroke-linecap", "round")
+    .attr("stroke-width", 1.0)
+    .attr("d", line);
+
+}
+
+const getLapTimes = async (raceid, driverid) => {
+  let url = proxy + "/LapTimes/" + raceid + "/" + driverid;
+  let result = await ajaxRequest("GET", url);
+}
+
 const changeCircuit = async (e) => {
   let ele = document.getElementById('circuit');
   if (e.key === "ArrowLeft" && ele.dataset.circuitid != 1) {
