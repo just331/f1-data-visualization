@@ -1,5 +1,19 @@
 const proxy = "http://localhost:3005"
+const svgWidth = 900;
+const svgHeight = 600;
+const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+const width = svgWidth - margin.left - margin.right;
+const height = svgHeight - margin.top - margin.bottom;
+const colorPallete = [
+  "#4dEEEA",
+  "#74EE15",
+  "#FFE700",
+  "#F000FF",
+  "#001EFF"
+]
+
 var delayTimer;
+
 
 document.addEventListener("keydown", async (e) => {
   if (e.key === "ArrowUp" || e.key === "ArrowDown") {
@@ -18,14 +32,7 @@ document.addEventListener("keydown", async (e) => {
   }
 });
 
-const drawChart = (data) => {
-  data.sort((a, b) => (a.lap > b.lap ? 1 : -1));
-  let svgWidth = 1200;
-  let svgHeight = 800;
-  let margin = { top: 20, right: 20, bottom: 30, left: 50 };
-  let width = svgWidth - margin.left - margin.right;
-  let height = svgHeight - margin.top - margin.bottom;
-
+const drawAxes = (laptimes) => {
   let svg = d3.select('svg')
     .attr("width", svgWidth)
     .attr("height", svgHeight);
@@ -41,8 +48,8 @@ const drawChart = (data) => {
   let line = d3.line()
    .x(function(d) { return x(d.lap)})
    .y(function(d) { return y(d.milliseconds)})
-   x.domain(d3.extent(data, function(d) { return d.lap }));
-   y.domain(d3.extent(data, function(d) { return d.milliseconds }));
+   x.domain(d3.extent(laptimes, function(d) { return d.lap }));
+   y.domain(d3.extent(laptimes, function(d) { return d.milliseconds }));
 
    g.append("g")
      .attr("transform", "translate(0," + height + ")")
@@ -60,26 +67,53 @@ const drawChart = (data) => {
      .attr("text-anchor", "end")
    .text("Time (ms)");
 
-   // Only plot the top three drivers by default
-   for (let laptimes of data) {
-     laptimes.sort((a, b) => (a.lap > b.lap ? 1 : -1));
+  return {line, g};
+}
 
+const drawChart = async (results) => {
+  // Sort results by final position
+  results.sort((a, b) => (a.position > b.position ? 1 : -1));
+  var availableColors = colorPallete;
+  // Get the top three drivers by default
+  for (let i = 0; i < 3; i++) {
+    var g;
+    var line;
+    result = results[i];
+    console.log(result);
+    let laptimes = await getLapTimes(result.raceId, result.driverId);
+    // Sort laptimes by lap number
+    laptimes.sort((a, b) => (a.lap > b.lap ? 1 : -1));
+    if (i == 0) {
+      let axes = drawAxes(laptimes);
+      g = axes.g;
+      line = axes.line;
+    }
+
+    let lineColor = getRandomColor(availableColors);
+
+
+    g.append("path")
+      .datum(laptimes)
+      .attr("data-driverid", result.driverId)
+      .attr("fill", "none")
+      .attr("stroke", lineColor)
+      .attr("stroke-linejoin", "round")
+      .attr("stroke-linecap", "round")
+      .attr("stroke-width", 1.0)
+      .attr("d", line);
    }
+}
 
-   g.append("path")
-    .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", "steelblue")
-    .attr("stroke-linejoin", "round")
-    .attr("stroke-linecap", "round")
-    .attr("stroke-width", 1.0)
-    .attr("d", line);
-
+const getRandomColor = (availableColors) => {
+  let colorIndex = Math.floor(Math.random() * availableColors.length);
+  console.log(colorIndex);
+  return availableColors[colorIndex];
 }
 
 const getLapTimes = async (raceid, driverid) => {
   let url = proxy + "/LapTimes/" + raceid + "/" + driverid;
   let result = await ajaxRequest("GET", url);
+  return result
 }
 
 const changeCircuit = async (e) => {
@@ -106,7 +140,7 @@ const getRace = async () => {
     let result = await ajaxRequest("GET", url);
     console.log(result);
     getResults(result);
-  }, 500);
+  }, 3000);
 }
 
 const getResults = async (race) => {
@@ -116,6 +150,7 @@ const getResults = async (race) => {
     console.log("No results for that race.")
   } else {
     console.log(result);
+    await drawChart(result);
   }
 }
 
