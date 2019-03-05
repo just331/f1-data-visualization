@@ -1,4 +1,4 @@
-const proxy = "http://localhost:3005"
+const proxy = window.location.href;
 const svgWidth = 900;
 const svgHeight = 600;
 const margin = { top: 20, right: 20, bottom: 30, left: 50 };
