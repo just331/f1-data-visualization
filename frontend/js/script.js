@@ -130,6 +130,7 @@ const drawChart = async (results) => {
       .data(laptimes)
     .enter().append("circle")
       .attr("fill", lineColor)
+      .attr("class", "driverC" + driverid)
       .attr("cx", function(d) { return x(d.lap) })
       .attr("cy", function(d) { return y(d.milliseconds) })
       .attr("r", 2);
@@ -157,6 +158,7 @@ const toggleDriver = async (e) => {
     console.log("Already exists!")
     availableColors.push()
     d3.select("#driver" + driverid).remove();
+    d3.select(".driverC" + driverid).remove();
   } else {
     let laptimes = await getLapTimes(raceid, driverid);
     let lineColor = availableColors.pop();
@@ -177,6 +179,7 @@ const toggleDriver = async (e) => {
       .data(laptimes)
     .enter().append("circle")
       .attr("fill", lineColor)
+      .attr("class", "driverC" + driverid)
       .attr("cx", function(d) { return x(d.lap) })
       .attr("cy", function(d) { return y(d.milliseconds) })
       .attr("r", 2);
