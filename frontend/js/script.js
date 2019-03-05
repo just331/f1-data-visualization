@@ -172,6 +172,14 @@ const toggleDriver = async (e) => {
       .attr("stroke-linecap", "round")
       .attr("stroke-width", 1.0)
       .attr("d", line);
+
+    g.selectAll(".dot")
+      .data(laptimes)
+    .enter().append("circle")
+      .attr("fill", lineColor)
+      .attr("cx", function(d) { return x(d.lap) })
+      .attr("cy", function(d) { return y(d.milliseconds) })
+      .attr("r", 2);
   }
 }
 
