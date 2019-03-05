@@ -30,6 +30,10 @@ var g;
 var line;
 var availableColors = colorPallete;
 
+document.addEventListener("DOMContentLoaded", async (e) => {
+  await getRace();
+})
+
 document.addEventListener("keydown", async (e) => {
   if (e.key === "ArrowUp" || e.key === "ArrowDown") {
     let ele = document.getElementById('year');
