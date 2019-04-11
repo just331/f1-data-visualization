@@ -34,7 +34,7 @@ var currCircuit = 0;
 
 document.addEventListener("DOMContentLoaded", async (e) => {
   await getCircuits();
-  // await getRace();
+  await getRace();
 })
 
 document.addEventListener("keydown", async (e) => {
@@ -209,21 +209,19 @@ const getCircuits = async (e) => {
   let ele = document.getElementById('circuit');
   let circuit = circuits[currCircuit];
   ele.innerHTML = circuit.circuitName;
-  ele.dataset.circuitId = circuit.circuitId;
+  ele.dataset.circuitid = circuit.circuitId;
 }
 
 const changeCircuit = async (e) => {
   let ele = document.getElementById('circuit');
   if (e.key === "ArrowLeft" && currCircuit != 0) {
     let arg = circuits[currCircuit--];
-    console.log(arg);
     ele.innerHTML = arg.circuitName;
-    ele.dataset.circuitId = arg.circuitId;
+    ele.dataset.circuitid = arg.circuitId;
   } else if (e.key === "ArrowRight" && currCircuit != circuits.length - 1) {
     let arg = circuits[currCircuit++];
-    console.log(arg);
     ele.innerHTML = arg.circuitName;
-    ele.dataset.circuitId = arg.circuitId;
+    ele.dataset.circuitid = arg.circuitId;
   }
 }
 
@@ -235,7 +233,7 @@ const getRace = async () => {
     availableColors = colorPallete.slice(0)
     let circuitid = document.getElementById('circuit').dataset.circuitid;
     let year = document.getElementById('year').dataset.year;
-    let url = proxy + "/Results/" + year + "/" + circuitid;
+    let url = proxy + "Results/" + year + "/" + circuitid;
     let result = await ajaxRequest("GET", url);
     if (result == 0) {
       console.log("No results for that race.")
@@ -258,12 +256,15 @@ const getRace = async () => {
 
 const drawWordle = async (results) => {
   console.log(results);
-  var words = results
-    .map(function(driver) {
+  let race = results.MRData.RaceTable.Races[0];
+  console.log(race);
+  let words = race.Results
+    .map(function(raceResult) {
 
       // TODO: Refine this equation
-      return {text: driver.text, size: 10 + driver.pos * 90};
+      return {text: raceResult.Driver.driverId, size: 10 + raceResult.position * 90};
   });
+  console.log(words);
 
   var cloudClient = d3.layout.cloud()
 
