@@ -235,6 +235,26 @@ const getResults = async (race) => {
   }
 }
 
+const drawWordle = async (drivers) => {
+  var words = drivers
+    .map(function(driver) {
+      return {text: driver.text, size: 10 + driver.pos * 90};
+  });
+
+  var cloudClient = d3.layout.cloud()
+
+  // TODO: Fix these damn dimensions
+  cloudClient.size([960, 500])
+    .words(words)
+    .padding(5)
+    .rotate(function() { return ~~(Math.random() * 2) * 90; })
+    .font("Impact")
+    .on("end", end)
+    .start();
+}
+
+function end(words) { console.log(JSON.stringify(words)); }
+
 const ajaxRequest = async (protocol, url) => {
   const res = await fetch(url);
   return await res.json();
