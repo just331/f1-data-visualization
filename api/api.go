@@ -7,18 +7,29 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/joshuaj1397/Ergast-F1-API"
 	"github.com/joshuaj1397/f1-data-visualization/model"
 )
 
-func GetCircuit(w http.ResponseWriter, r *http.Request) {
+func GetCircuits(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	circuitId, err := strconv.Atoi(params["circuitId"])
-	circuit, err := model.GetCircuit(circuitId)
+	season, _ := params["season"]
+	circuits, err := ergast.GetCircuit(season, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	json.NewEncoder(w).Encode(circuit)
+	json.NewEncoder(w).Encode(circuits)
 }
+
+// func GetCircuit(w http.ResponseWriter, r *http.Request) {
+// 	params := mux.Vars(r)
+// 	circuitId, err := strconv.Atoi(params["circuitId"])
+// 	circuit, err := model.GetCircuit(circuitId)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	json.NewEncoder(w).Encode(circuit)
+// }
 
 func GetRace(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
