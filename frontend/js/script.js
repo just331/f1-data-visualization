@@ -29,9 +29,12 @@ var delayTimer;
 var g;
 var line;
 var availableColors = colorPallete;
+var circuits;
+var currCircuit = 0;
 
 document.addEventListener("DOMContentLoaded", async (e) => {
-  await getRace();
+  await getCircuits();
+  // await getRace();
 })
 
 document.addEventListener("keydown", async (e) => {
@@ -44,6 +47,7 @@ document.addEventListener("keydown", async (e) => {
       --ele.innerHTML;
       --ele.dataset.year;
     }
+    await getCircuits();
     await getRace();
   } else if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
       await changeCircuit(e);
@@ -103,7 +107,6 @@ const drawChart = async (results) => {
   // Get the top three drivers by default
   for (let i = 0; i < 3; i++) {
     result = results[i];
-    console.log(result);
     let laptimes = await getLapTimes(result.raceId, result.driverId);
     if (i == 0) {
       let axes = drawAxes(laptimes);
@@ -194,18 +197,33 @@ const getLapTimes = async (raceid, driverid) => {
   return result
 }
 
+const getCircuits = async (e) => {
+  let yearEle = document.getElementById('year');
+  let url = proxy + "Circuits/" + yearEle.dataset.year
+  let result = await ajaxRequest("GET", url);
+  circuits = result.MRData.CircuitTable.Circuits;
+  console.log(circuits);
+
+  // Set first circuit for the year and reset currCircuit
+  currCircuit = 0;
+  let ele = document.getElementById('circuit');
+  let circuit = circuits[currCircuit];
+  ele.innerHTML = circuit.circuitName;
+  ele.dataset.circuitId = circuit.circuitId;
+}
+
 const changeCircuit = async (e) => {
   let ele = document.getElementById('circuit');
-  if (e.key === "ArrowLeft" && ele.dataset.circuitid != 1) {
-    let arg = --ele.dataset.circuitid;
-    let url = proxy + "/Circuit/" + arg;
-    let result = await ajaxRequest("GET", url);
-    ele.innerHTML = result.name;
-  } else if (e.key === "ArrowRight" && ele.dataset.circuitid != 73) {
-    let arg = ++ele.dataset.circuitid;
-    let url = proxy + "/Circuit/" + arg;
-    let result = await ajaxRequest("GET", url);
-    ele.innerHTML = result.name;
+  if (e.key === "ArrowLeft" && currCircuit != 0) {
+    let arg = circuits[currCircuit--];
+    console.log(arg);
+    ele.innerHTML = arg.circuitName;
+    ele.dataset.circuitId = arg.circuitId;
+  } else if (e.key === "ArrowRight" && currCircuit != circuits.length - 1) {
+    let arg = circuits[currCircuit++];
+    console.log(arg);
+    ele.innerHTML = arg.circuitName;
+    ele.dataset.circuitId = arg.circuitId;
   }
 }
 
@@ -217,26 +235,30 @@ const getRace = async () => {
     availableColors = colorPallete.slice(0)
     let circuitid = document.getElementById('circuit').dataset.circuitid;
     let year = document.getElementById('year').dataset.year;
-    let url = proxy + "/Races/" + year + "/" + circuitid;
+    let url = proxy + "/Results/" + year + "/" + circuitid;
     let result = await ajaxRequest("GET", url);
-    console.log(result);
-    getResults(result);
+    if (result == 0) {
+      console.log("No results for that race.")
+    } else {
+      await drawWordle(result);
+    }
   }, 1000);
 }
 
-const getResults = async (race) => {
-  let url = proxy + "/Results/" + race.raceId;
-  let result = await ajaxRequest("GET", url);
-  if (result == 0) {
-    console.log("No results for that race.")
-  } else {
-    console.log(result);
-    await drawChart(result);
-  }
-}
+// const getResults = async (race) => {
+//   let url = proxy + "/Results/" + race.raceId;
+//   let result = await ajaxRequest("GET", url);
+//   if (result == 0) {
+//     console.log("No results for that race.")
+//   } else {
+//     await drawWordle(result);
+//     // await drawChart(result);
+//   }
+// }
 
-const drawWordle = async (drivers) => {
-  var words = drivers
+const drawWordle = async (results) => {
+  console.log(results);
+  var words = results
     .map(function(driver) {
 
       // TODO: Refine this equation

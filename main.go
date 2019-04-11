@@ -22,7 +22,7 @@ func main() {
 	fs := http.FileServer(http.Dir("./frontend/"))
 
 	// API: Server -> API
-	router.HandleFunc("/Circuit/{season}/", api.GetCircuits).Methods("GET")
+	router.HandleFunc("/Circuits/{season}", api.GetCircuits).Methods("GET")
 	router.HandleFunc("/Results/{season}/{circuitId}", api.GetResults).Methods("GET")
 
 	// API: Server -> Database
