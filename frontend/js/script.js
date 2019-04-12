@@ -262,7 +262,7 @@ const drawWordle = async (results) => {
     .map(function(raceResult) {
 
       // TODO: Refine this equation
-      return {text: raceResult.Driver.driverId, size: 10 + raceResult.position * 90};
+      return {text: raceResult.Driver.driverId, size: 10 + Math.abs(raceResult.position - race.Results.length) * 90};
   });
   console.log(words);
 
@@ -274,11 +274,16 @@ const drawWordle = async (results) => {
     .padding(5)
     .rotate(function() { return ~~(Math.random() * 2) * 90; })
     .font("Impact")
-    .on("end", draw)
+    .on("end", draw(words))
     .start();
 }
 
 function end(words) { console.log(JSON.stringify(words)); }
+
+function getRandColor() {
+  let color = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6);
+  return color;
+}
 
 function draw(words) {
         d3.select("#wordle").append("svg")
@@ -293,8 +298,9 @@ function draw(words) {
                 .data(words)
                 .enter().append("text")
                 .style("font-size", function(d) { return d.size + "px"; })
-                .style("fill", function(d, i) { return color(i); })
+                .style("fill", function(d, i) { return getRandColor(); })
                 .attr("transform", function(d) {
+                    console.log(d);
                     return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
                 })
                 .text(function(d) { return d.text; });
