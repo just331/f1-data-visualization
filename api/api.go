@@ -12,7 +12,6 @@ import (
 )
 
 func GetCircuits(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("GetCircuits called")
 	params := mux.Vars(r)
 	season, _ := params["season"]
 
@@ -24,7 +23,6 @@ func GetCircuits(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetCircuit(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("GetCircuit called")
 	var additionalParams map[string]string
 	additionalParams = make(map[string]string)
 	params := mux.Vars(r)
