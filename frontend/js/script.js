@@ -243,42 +243,28 @@ const getRace = async () => {
   }, 1000);
 }
 
-// const getResults = async (race) => {
-//   let url = proxy + "/Results/" + race.raceId;
-//   let result = await ajaxRequest("GET", url);
-//   if (result == 0) {
-//     console.log("No results for that race.")
-//   } else {
-//     await drawWordle(result);
-//     // await drawChart(result);
-//   }
-// }
-
 const drawWordle = async (results) => {
-  console.log(results);
   let race = results.MRData.RaceTable.Races[0];
-  console.log(race);
   let words = race.Results
     .map(function(raceResult) {
 
       // TODO: Refine this equation
-      return {text: raceResult.Driver.driverId, size: 10 + Math.abs(raceResult.position - race.Results.length) * 90};
+      return {
+        text: raceResult.Driver.driverId,
+        size: 10 + Math.abs(raceResult.position - race.Results.length) * 2
+      };
   });
-  console.log(words);
 
-  var cloudClient = d3.layout.cloud()
+  var layout = d3.layout.cloud()
 
-  // TODO: Fix these damn dimensions
-  cloudClient.size([960, 500])
+  // TODO: Fix dimensions
+  layout.size([960, 500])
     .words(words)
-    .padding(5)
-    .rotate(function() { return ~~(Math.random() * 2) * 90; })
     .font("Impact")
+    .fontSize(function(d) { return d.size; })
     .on("end", draw(words))
     .start();
 }
-
-function end(words) { console.log(JSON.stringify(words)); }
 
 function getRandColor() {
   let color = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6);
@@ -286,24 +272,23 @@ function getRandColor() {
 }
 
 function draw(words) {
-        d3.select("#wordle").append("svg")
-                .attr("width", 850)
-                .attr("height", 350)
-                .attr("class", "wordcloud")
-                .append("g")
-                // without the transform, words words would get cutoff to the left and top, they would
-                // appear outside of the SVG area
-                .attr("transform", "translate(320,200)")
-                .selectAll("text")
-                .data(words)
-                .enter().append("text")
-                .style("font-size", function(d) { return d.size + "px"; })
-                .style("fill", function(d, i) { return getRandColor(); })
-                .attr("transform", function(d) {
-                    console.log(d);
-                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                })
-                .text(function(d) { return d.text; });
+  d3.select("#wordle").append("svg")
+          .attr("width", 850)
+          .attr("height", 350)
+          .attr("class", "wordcloud")
+          .append("g")
+          // without the transform, words words would get cutoff to the left and top, they would
+          // appear outside of the SVG area
+          .attr("transform", "translate(320,200)")
+          .selectAll("text")
+          .data(words)
+          .enter().append("text")
+          .style("font-size", function(d) { return d.size + "px"; })
+          .style("fill", function() { return getRandColor(); })
+          .attr("transform", function(d) {
+              return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+          })
+          .text(function(d) { return d.text; });
     }
 
 const ajaxRequest = async (protocol, url) => {
