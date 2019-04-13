@@ -261,8 +261,9 @@ const drawWordle = async (results) => {
   layout.size([960, 500])
     .words(words)
     .font("Impact")
-    .fontSize(function(d) { return d.size; })
-    .on("end", draw(words))
+    .rotate(function(d) { return 30; })
+    .fontSize(function(d, i) { return d.size; })
+    .on("end", draw)
     .start();
 }
 
@@ -286,6 +287,7 @@ function draw(words) {
           .style("font-size", function(d) { return d.size + "px"; })
           .style("fill", function() { return getRandColor(); })
           .attr("transform", function(d) {
+            console.log(d);
               return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
           })
           .text(function(d) { return d.text; });
