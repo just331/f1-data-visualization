@@ -50,8 +50,8 @@ document.addEventListener("keydown", async (e) => {
     await getCircuits();
     await getRace();
   } else if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
-      await changeCircuit(e);
-      await getRace();
+    await changeCircuit(e);
+    await getRace();
   }
 });
 
@@ -94,8 +94,8 @@ const changeCircuit = async (e) => {
 const getRace = async () => {
   clearTimeout(delayTimer);
   delayTimer = setTimeout( async () => {
-    document.getElementById('chart').innerHTML = '';
-    document.getElementById('drivers').innerHTML = '';
+    // document.getElementById('chart').innerHTML = '';
+    // document.getElementById('drivers').innerHTML = '';
     availableColors = colorPallete.slice(0)
     let circuitid = document.getElementById('circuit').dataset.circuitid;
     let year = document.getElementById('year').dataset.year;

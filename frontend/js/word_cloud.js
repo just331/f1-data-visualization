@@ -3,7 +3,6 @@ const drawWordle = async (results) => {
   let words = race.Results
     .map(function(raceResult) {
 
-      console.log(raceResult);
       // TODO: Refine this equation
       return {
         text: raceResult.Driver.familyName,
@@ -22,6 +21,7 @@ const drawWordle = async (results) => {
     .start();
 }
 
+// TODO: Use a color pallete that contains meaningful colors
 function getRandColor() {
   let color = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6);
   return color;
