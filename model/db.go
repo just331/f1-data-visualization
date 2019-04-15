@@ -2,7 +2,7 @@ package model
 
 import (
 	"context"
-	"log"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -34,7 +34,7 @@ func init() {
 
 	err := client.Ping(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 }
 
@@ -89,12 +89,12 @@ func GetLapTimes(raceId, driverId int) []LapTimes {
 	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
 	cur, err := db.Collection("LapTimes").Find(ctx, bson.M{"raceId": raceId, "driverId": driverId})
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 	for cur.Next(ctx) {
 		err := cur.Decode(&laptime)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
 		}
 		laptimes = append(laptimes, *laptime)
 	}
@@ -121,12 +121,12 @@ func GetResults(raceId int) []Results {
 	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
 	cur, err := db.Collection("Results").Find(ctx, bson.M{"raceId": raceId})
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 	for cur.Next(ctx) {
 		err := cur.Decode(&result)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
 		}
 		results = append(results, *result)
 	}
