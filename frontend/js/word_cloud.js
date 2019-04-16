@@ -23,7 +23,7 @@ const drawWordle = async (results) => {
 
 // TODO: Use a color pallete that contains meaningful colors
 function getRandColor() {
-  let color = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6);
+  let color = '#9CDCFE';
   return color;
 }
 
