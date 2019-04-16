@@ -4,9 +4,14 @@ const drawWordle = async (results) => {
     .map(function(raceResult) {
 
       // TODO: Refine this equation
+      console.log(raceResult)
       return {
         text: raceResult.Driver.familyName,
-        size: 10 + Math.abs(raceResult.position - race.Results.length) * 2
+        size: 10 + Math.abs(raceResult.position - race.Results.length) * 2,
+        name: raceResult.Driver.familyName,
+        position: raceResult.Position,
+        nationality: raceResult.Driver.nationality
+        //come from same race result object
       };
   });
 
@@ -44,5 +49,5 @@ function draw(words) {
     .attr("transform", function(d) {
         return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
     })
-    .text(function(d) { return d.text; });
+    .text(function(d) { console.log(d); return d.text; });
 }
