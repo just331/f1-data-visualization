@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/joshuaj1397/f1-data-visualization/api"
-	"github.com/joshuaj1397/f1-data-visualization/model"
+	"github.com/just331/f1-data-visualization/api"
+	"github.com/just331/f1-data-visualization/model"
 )
 
 var port = "3005"

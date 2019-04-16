@@ -8,7 +8,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/joshuaj1397/Ergast-F1-API"
-	"github.com/joshuaj1397/f1-data-visualization/model"
+	"github.com/just331/f1-data-visualization/model"
 )
 
 func GetCircuits(w http.ResponseWriter, r *http.Request) {
