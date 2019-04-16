@@ -4,6 +4,7 @@ const drawWordle = async (results) => {
     .map(function(raceResult) {
 
       // TODO: Refine this equation
+      console.log(raceResult)
       return {
         text: raceResult.Driver.familyName,
         size: 10 + Math.abs(raceResult.position - race.Results.length) * 2,
@@ -55,6 +56,4 @@ function draw(words) {
               return "<b>"+ d.name + "</b><br/>"+ d.nationality;
 
           }
-
-      ));
 }
