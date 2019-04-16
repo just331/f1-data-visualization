@@ -73,7 +73,7 @@ function ready(error, world, data) {
 
         ));
 
-    var zoom = d3.behavior.zoom()
+    /*var zoom = d3.behavior.zoom()
         .on("zoom",function() {
             svg.attr("transform","translate("+
                 d3.event.translate.join(",")+")scale("+d3.event.scale+")");
@@ -84,6 +84,6 @@ function ready(error, world, data) {
 
         });
 
-    svg.call(zoom)
+    svg.call(zoom)*/
 }
 

@@ -6,11 +6,14 @@ const drawWordle = async (results) => {
       // TODO: Refine this equation
       return {
         text: raceResult.Driver.familyName,
-        size: 10 + Math.abs(raceResult.position - race.Results.length) * 2
+        size: 10 + Math.abs(raceResult.position - race.Results.length) * 2,
+          name: raceResult.Driver.familyName,
+          position: raceResult.Position,
+          nationality: raceResult.Driver.nationality
       };
   });
 
-  var layout = d3.layout.cloud()
+  var layout = d3.layout.cloud();
 
   // TODO: Fix dimensions
   layout.size([1250, 750])
@@ -19,7 +22,7 @@ const drawWordle = async (results) => {
     .fontSize(function(d, i) { return d.size; })
     .on("end", draw)
     .start();
-}
+};
 
 // TODO: Use a color pallete that contains meaningful colors
 function getRandColor() {
@@ -45,5 +48,13 @@ function draw(words) {
     .attr("transform", function(d) {
         return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
     })
-    .text(function(d) { return d.text; });
+    .text(function(d) { return d.text; })
+      .call(d3.helper.tooltip(
+          function(d){
+              console.log(d);
+              return "<b>"+ d.name + "</b><br/>"+ d.nationality;
+
+          }
+
+      ));
 }

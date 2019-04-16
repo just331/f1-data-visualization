@@ -88,7 +88,13 @@ circle {
   border-radius:10px;
 }
 
+.wordle{
+  width: 50%;
+}
 
+.map{
+  transform: scale(0.8,0.8);
+}
 body {
   background: #383838;
 }
