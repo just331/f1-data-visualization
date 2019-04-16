@@ -54,6 +54,7 @@ function draw(words) {
           function(d){
               console.log(d);
               return "<b>"+ d.name + "</b><br/>"+ d.nationality;
+          })
+      )
 
-          }
 }
