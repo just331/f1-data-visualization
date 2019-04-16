@@ -1,13 +1,13 @@
 # F1 Data Visualization
 This project provides a visualization to more easily determine which drivers have dominated Formula One (F1) racing circuits from the years 2009 to 2018. The data is from ergast.com/mrd, a site that provides an API with data for every circuit around the world starting with that of the year 1950. Example data includes race results, driver standings, driver information, and circuit information.
 
-<!--
+
 Click the image below to watch a short video demo.
 
-[video]
+[https://www.youtube.com/watch?v=gUjRPfxCDnA&feature=youtu.be]
 
-Alternatively, t
--->
+Alternatively,
+
 
 The following link is our live site:
 http://ec2-18-191-95-221.us-east-2.compute.amazonaws.com:3005
